@@ -45,16 +45,16 @@ const titleClickHandler = function (event) {
   targetArticle.classList.add('active');
 }
 
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
+const optArticleSelector = '.post';
+const optTitleSelector = '.post-title';
 
 function generateTitleLinks() {
 
   /* remove contents of titleList */
 
   const titleList = document.querySelector('.titles');
-  innerHTML = '';
+  titleList.innerHTML = '';
+
 
   /* for each article */
 

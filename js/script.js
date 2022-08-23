@@ -7,7 +7,7 @@ const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optTagsListSelector = '.post-tags .list';
-  
+
 
 const titleClickHandler = function (event) {
   event.preventDefault();
@@ -94,7 +94,7 @@ function generateTitleLinks(customSelector = '') {
 
 const articleTags = 'data-tags';
 
-const generateTags = function() {
+const generateTags = function () {
 
   const articles = document.querySelectorAll(optArticleSelector);
 
@@ -114,72 +114,83 @@ const generateTags = function() {
   }
 }
 
-  function tagClickHandler(event){
+function tagClickHandler(event) {
 
-      /* prevent default action for this event */
+  /* prevent default action for this event */
 
-      event.preventDefault();
-    
-      /* make new constant named "clickedElement" and give it the value of "this" */
+  event.preventDefault();
 
-      const clickedElement = this;
-    
-      /* make a new constant "href" and read the attribute "href" of the clicked element */
+  /* make new constant named "clickedElement" and give it the value of "this" */
 
-      'a[href="' + href + '"]'
-    
-      /* make a new constant "tag" and extract tag from the "href" constant */
+  const clickedElement = this;
 
-      const tag = href.replace('#tag-', '');
-    
-      /* find all tag links with class active */
+  /* make a new constant "href" and read the attribute "href" of the clicked element */
 
-      targetTagLinks.class('active');
-    
-      /* START LOOP: for each active tag link */
+  const href = clickedElement.getAttribute("href");
 
-      for(link of links){
-    
-        /* remove class active */
+  /* make a new constant "tag" and extract tag from the "href" constant */
 
-        targetTagLink.classList.remove('active');
-    
-      /* END LOOP: for each active tag link */
+  const tag = href.replace('#tag-', '');
 
-      }
-    
-      /* find all tag links with "href" attribute equal to the "href" constant */
+  /* find all tag links with class active */
 
-      targetTagLinks('href') = href
+  const activeLinks = document.querySelector('a.active[href^="#tag-"]');
 
-      /* START LOOP: for each found tag link */
+  /* START LOOP: for each active tag link */
 
-      for( tagLink of tagLinks){
-    
-        /* add class active */
+  for (const link of activeLinks) {
 
-        targetTagLink.class.remove('active');
-    
-      /* END LOOP: for each found tag link */
+    /* remove class active */
 
-      }
-    
-      /* execute function "generateTitleLinks" with article selector as argument */
+    targetTagLink.classList.remove('active');
 
-      generateTitleLinks('[data-tags~="' + tag + '"]');
-    }
-    
-    function addClickListenersToTags(){
-      /* find all links to tags */
-    
-      /* START LOOP: for each link */
-    
-        /* add tagClickHandler as event listener for that link */
-    
-      /* END LOOP: for each link */
-    }
-    
-    addClickListenersToTags();
-    generateTitleLinks();
-    generateTags();
-    generateTitleLinks('[data-tags~="' + tag + '"]');
+    /* END LOOP: for each active tag link */
+
+  }
+
+  /* find all tag links with "href" attribute equal to the "href" constant */
+
+  const relatedLinks = document.querySelector('a[href="#tag-' + tag + '"]');
+
+  /* START LOOP: for each found tag link */
+
+  for (const tagLink of relatedLinks) {
+
+    /* add class active */
+
+    tagLink.class.add('active');
+
+    /* END LOOP: for each found tag link */
+
+  }
+
+  /* execute function "generateTitleLinks" with article selector as argument */
+
+  generateTitleLinks('[data-tags~="' + tag + '"]');
+}
+
+function addClickListenersToTags() {
+  /* find all links to tags */
+
+const allTagLink = document.querySelectorAll('href');
+
+  /* START LOOP: for each link */
+
+for(tagLink of tagLinks){
+
+  /* add tagClickHandler as event listener for that link */
+
+
+
+  /* END LOOP: for each link */
+  }
+}
+
+function generateAuthors() {
+
+}
+
+addClickListenersToTags();
+generateTitleLinks();
+generateTags();
+generateTitleLinks('[data-tags~="' + tag + '"]');

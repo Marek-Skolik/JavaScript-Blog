@@ -197,6 +197,35 @@ function generateAuthors() {
   }
 }
 
+function authorClickHandler(event) {
+
+  event.preventDefault();
+
+  const clickedElement = this;
+
+  const href = clickedElement.getAttribute("href");
+
+  const author = href.replace('#author-', ''); 
+
+  const activeLinks = document.querySelectorAll('a.active[href^="#author-"]');
+
+  for (const link of activeLinks) {
+  
+    link.classList.remove('active');
+
+  }
+
+  const relatedLinks = document.querySelectorAll('a[href="#author-' + author + '"]');
+
+  for (const link of relatedLinks) {
+
+    link.classList.add('active');
+  }
+
+  generateTitleLinks('[data-author="' + author + '"]');
+}
+
+
 function addClickListenersToAuthors() {
   const allAuthorLinks = document.querySelectorAll('a[href^="#author-"]');
 

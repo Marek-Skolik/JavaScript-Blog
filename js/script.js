@@ -96,6 +96,9 @@ const articleTags = 'data-tags';
 
 const generateTags = function () {
 
+/* [NEW] create a new variable allTags with an empty object */
+  let allTags = {};
+
   const articles = document.querySelectorAll(optArticleSelector);
 
   for (let article of articles) {
@@ -107,12 +110,43 @@ const generateTags = function () {
     for (let tag of tags) {
       const tagLinkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
       html = html + tagLinkHTML;
+       /* [NEW] check if this link is NOT already in allTags */
+
+        if(!allTags[tag]) {
+
+      /* [NEW] add tag to allTags object */
+
+         allTags[tag] = 1;
+      }else {
+        allTags[tag]++;
+      }
     }
 
     tagsList.innerHTML = html;
 
   }
-}
+  /* [NEW] find list of tags in right column */
+
+  const tagList = document.querySelector(optTagsListSelector);
+
+  /* [NEW] create variable for all links HTML code */
+
+  let allTagsHTML = '';
+
+  /* [NEW] START LOOP: for each tag in allTags: */
+
+  for(let tag in allTags){
+    /* [NEW] generate code of a link and add it to allTagsHTML */
+
+    allTagsHTML += tag + ' (' + allTags.join(' ') + ') ';
+  }
+  /* [NEW] END LOOP: for each tag in allTags: */
+
+
+  /*[NEW] add HTML from allTagsHTML to tagList */
+  
+  tagList.innerHTML = allTagsHTML;
+  }
 
 function tagClickHandler(event) {
 

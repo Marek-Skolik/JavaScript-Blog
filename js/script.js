@@ -94,6 +94,23 @@ function generateTitleLinks(customSelector = '') {
 
 const articleTags = 'data-tags';
 
+const calculateTagsParams = function (tags){
+  const params = {
+    max:0,
+    min:999999,
+  }
+  for(let tag in tags){
+    if(tags[tag] > params.max){
+      params.max = tags[tag];
+    }
+    if(tags[tag] < params.min){
+      params.min = tags[tag];
+    }
+  }
+
+  return params;
+}
+
 const generateTags = function () {
 
 /* [NEW] create a new variable allTags with an empty object */
@@ -130,22 +147,27 @@ const generateTags = function () {
   const tagList = document.querySelector(optTagsListSelector);
 
   /* [NEW] create variable for all links HTML code */
-
-  let allTagsHTML = '';
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams)
+  let allTagsData = {tags: []};
 
   /* [NEW] START LOOP: for each tag in allTags: */
 
   for(let tag in allTags){
     /* [NEW] generate code of a link and add it to allTagsHTML */
 
-    allTagsHTML += tag + ' (' + allTags.join(' ') + ') ';
+      allTagsData.tags.push({
+        tag: tag,
+        count: allTags[tag],
+        className: calculateTagClass(allTags[tag], tagsParams)
+      });    
   }
   /* [NEW] END LOOP: for each tag in allTags: */
 
 
   /*[NEW] add HTML from allTagsHTML to tagList */
   
-  tagList.innerHTML = allTagsHTML;
+  tagList.innerHTML = templates.tagCloudLink(allTagsData);
   }
 
 function tagClickHandler(event) {

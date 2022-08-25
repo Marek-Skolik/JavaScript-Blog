@@ -94,17 +94,17 @@ function generateTitleLinks(customSelector = '') {
 
 const articleTags = 'data-tags';
 
-const calculateTagsParams = function(tags){
+function calculateTagsParams (allTags) {
   const params = {
-    max:0,
-    min:999999,
-  }
-  for (let tag in tags){
-    if(tags[tag] > params.max){
-      params.max = tags[tag];
+    max: 0, 
+    min: 99999
+  };
+  for(let tag in allTags){
+    if(allTags[tag] > params.max){
+      params.max = allTags[tag];
     }
-    if(tags[tag] < params.min){
-      params.min = tags[tag];
+    if(allTags[tag] < params.min){
+      params.min = allTags[tag];
     }
   }
   return params;
@@ -116,8 +116,9 @@ const calculateTagClass = function(count, params) {
   const percentage = normalizedCount / normalizedMax;
   const classNumber = Math.floor( percentage * (5 - 1) + 1 );
 
-  return 'tag-size-' + classNumber;
-};
+
+  return (tag-size- + classNumber);
+}
 
 const generateTags = function () {
 
@@ -127,9 +128,9 @@ const generateTags = function () {
 
   for (let article of articles) {
     const tagsList = article.querySelector(optTagsListSelector);
+    let html = '';
     const articleTags = article.getAttribute('data-tags');
     const tags = articleTags.split(' ');
-    let html = '';
     for (let tag of tags) {
       const tagLinkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
       html = html + tagLinkHTML;
@@ -147,11 +148,16 @@ const generateTags = function () {
   const tagList = document.querySelector(optTagsListSelector);
   /* [NEW] create variable for all links HTML code */
   const tagsParams = calculateTagsParams(allTags);
-  let allTagsHTML = '';
+  const allTagsData = {tags: []};
   /* [NEW] START LOOP: for each tag in allTags: */
   for(let tag in allTags){
   /* [NEW] generate code of a link and add it to allTagsHTML */
     allTagsHTML += '<li><a href="#tag-' + tag + '" class="' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + ' (' + allTags[tag] + ')' + '</a></li>';
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: calculateTagClass(allTags[tag], tagsParams)
+    });
     /* [NEW] END LOOP: for each tag in allTags: */
   }
    /* [NEW] create variable for all links HTML code */

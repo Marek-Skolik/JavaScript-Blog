@@ -277,15 +277,25 @@ const generateAuthors = function() {
     }else {
       allAuthors[author]++;
     }
-    
   }
-  
+  authorsList.innerHTML = html;
+}
+
    const authorsList = document.querySelector(optAuthorsCloudList);
    let allAuthorsData = {authors: []};
    const authorsParams = calculateAuthorsParams(allAuthors);
    console.log(authorsParams);
+
+   let allAuthorsHTML = '';
+
+   for (let author in allAuthors) {
+    allAuthorsHTML += '<li><a href="#author-' + author + '" class="' + calculateAuthorClass(allAuthors[author], authorsParams) + '">' + author + ' (' + allTauthors[author] + ')' + '</a></li>';
+  }
+
+  /* [NEW] create variable for all links HTML code */
+  authorList.innerHTML = allauthorsHTML;
 }
-}
+
 
 function authorClickHandler(event) {
 

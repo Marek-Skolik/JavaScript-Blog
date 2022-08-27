@@ -3,7 +3,7 @@
     console.log('links:', links);
   }); */
 
-  const optArticleSelector = '.post',
+const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optTagsListSelector = '.post-tags .list',
@@ -95,28 +95,28 @@ function generateTitleLinks(customSelector = '') {
 /* moduł 7 */
 
 const calculateTagsParams = function (allTags) {
- 
-  const params = {
-   max: 0,
-   min: 99999
- };
 
-for (let tag in allTags) {
- if (allTags[tag] > params.max) {
-   params.max = allTags[tag];
- }
- if (allTags[tag] < params.min) {
-   params.min = allTags[tag];
- }
-}
- return params;
+  const params = {
+    max: 0,
+    min: 99999
+  };
+
+  for (let tag in allTags) {
+    if (allTags[tag] > params.max) {
+      params.max = allTags[tag];
+    }
+    if (allTags[tag] < params.min) {
+      params.min = allTags[tag];
+    }
+  }
+  return params;
 };
 
-const calculateTagClass = function(count, params) {
+const calculateTagClass = function (count, params) {
   const normalizedCount = count - params.min;
   const normalizedMax = params.max - params.min;
   const percentage = normalizedCount / normalizedMax;
-  const classNumber = Math.floor( percentage * (5 - 1) + 1 );
+  const classNumber = Math.floor(percentage * (5 - 1) + 1);
 
   return 'tag-size-' + classNumber;
 };
@@ -235,65 +235,66 @@ function addClickListenersToTags() {
 }
 
 const calculateAuthorsParams = function (allAuthors) {
- 
-  const params = {
-   max: 0,
-   min: 99999
- };
 
-for (let tag in allTags) {
- if (allAuthors[author] > params.max) {
-   params.max = allAuthors[author];
- }
- if (allAuthors[author] < params.min) {
-   params.min = allAuthors[author];
- }
-}
- return params;
+  const params = {
+    max: 0,
+    min: 99999
+  };
+
+  for (let author in allAuthors) {
+    if (allAuthors[author] > params.max) {
+      params.max = allAuthors[author];
+    }
+    if (allAuthors[author] < params.min) {
+      params.min = allAuthors[author];
+    }
+  }
+  return params;
 };
 
-const calculateAuthorClass = function(count, params) {
+const calculateAuthorClass = function (count, params) {
   const normalizedCount = count - params.min;
   const normalizedMax = params.max - params.min;
   const percentage = normalizedCount / normalizedMax;
-  const classNumber = Math.floor( percentage * (4 - 1) + 1 );
+  const classNumber = Math.floor(percentage * (4 - 1) + 1);
 
   return 'author-size-' + classNumber;
 };
 
-const generateAuthors = function() {
+const generateAuthors = function () {
   let allAuthors = {};
   const articles = document.querySelectorAll(optArticleSelector);
 
   for (const article of articles) {
     const authorList = article.querySelector(optAuthorsListSelector);
-    let html= '';
-    const author = article.getAttribute('data-author');
-    for(let author of authors) {
+    let html = '';
+    const authors = article.getAttribute('data-author');
+
+    for (let author of authors) {
       const authorLinkHTML = '<li><a href="#author-' + author + '" >' + author + ' (' + allAuthors[author] + ') </a></li> ';
       html = html + authorLinkHTML
-    if(!allAuthors[author]){
-      allAuthors[author] = 1;
-    }else {
-      allAuthors[author]++;
+      if (!allAuthors[author]) {
+        allAuthors[author] = 1;
+      } else {
+        allAuthors[author]++;
+      }
     }
+    optAuthorsListSelector.innerHTML = html;
   }
-  authorsList.innerHTML = html;
-}
 
-   const authorsList = document.querySelector(optAuthorsCloudList);
-   let allAuthorsData = {authors: []};
-   const authorsParams = calculateAuthorsParams(allAuthors);
-   console.log(authorsParams);
+  const authorsList = document.querySelector(optAuthorsCloudList);
+  let allAuthorsData = { authors: [] };
+  const authorsParams = calculateAuthorsParams(allAuthors);
+  console.log(authorsParams);
 
-   let allAuthorsHTML = '';
+  let allAuthorsHTML = '';
 
-   for (let author in allAuthors) {
-    allAuthorsHTML += '<li><a href="#author-' + author + '" class="' + calculateAuthorClass(allAuthors[author], authorsParams) + '">' + author + ' (' + allTauthors[author] + ')' + '</a></li>';
+  for (let author in allAuthors) {
+    allAuthorsHTML += '<li><a href="#author-' + author + '" class="' + calculateAuthorClass(allAuthors[author], authorsParams) + '">' + author + ' (' + allAuthors[author] + ')' + '</a></li>';
   }
 
   /* [NEW] create variable for all links HTML code */
-  authorList.innerHTML = allauthorsHTML;
+  optAuthorsListSelector.innerHTML = allauthorsHTML;
 }
 
 

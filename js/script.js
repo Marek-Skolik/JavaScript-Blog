@@ -3,13 +3,31 @@
     console.log('links:', links);
   }); */
 
-  const optArticleSelector = '.post',
+const templates = {
+  articleLink: Handlebars.compile(
+    document.querySelector('#template-article-link').innerHTML
+  ),
+  tagLink: Handlebars.compile(
+    document.querySelector('#template-tag-link').innerHTML
+  ),
+  authorLink: Handlebars.compile(
+    document.querySelector('#template-author-link').innerHTML
+  ),
+  tagCloudLink: Handlebars.compile(
+    document.querySelector('#template-tag-cloud-link').innerHTML
+  ),
+  authorList: Handlebars.compile(
+    document.querySelector('#template-author-list-link').innerHTML
+  ),
+};
+
+const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optTagsListSelector = '.post-tags .list',
   optTagsCloudList = '.sidebar .tags',
   optAuthorsListSelector = '.authors .list';
-  optAuthorsCloudList = '.sidebar .authors';
+optAuthorsCloudList = '.sidebar .authors';
 
 const titleClickHandler = function (event) {
   event.preventDefault();
@@ -77,7 +95,8 @@ function generateTitleLinks(customSelector = '') {
 
     /* get the title from the title element */
 
-    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    const linkHTMLData = { id: articleId, title: articleTitle };
+    const linkHTML = templates.articleLink(linkHTMLData);
 
     /* insert link into titleList */
     html = html + linkHTML;
@@ -132,8 +151,9 @@ const generateTags = function () {
     const articleTags = article.getAttribute('data-tags');
     const tags = articleTags.split(' ');
     for (let tag of tags) {
-      const tagLinkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
-      html = html + tagLinkHTML;
+      const linkHTMLData = { id: tag, title: tag };
+      const linkHTML = templates.articleLink(linkHTMLData);
+      html = html + linkHTML;
       /* [NEW] check if this link is NOT already in allTags */
       if (!allTags[tag]) {
         /* [NEW] add tag to allTags object */
@@ -152,14 +172,18 @@ const generateTags = function () {
   console.log(tagsParams);
 
   /* [NEW] START LOOP: for each tag in allTags: */
-  let allTagsHTML = '';
+  const allTagsData = { tags: [] };
 
   for (let tag in allTags) {
-    allTagsHTML += '<li><a href="#tag-' + tag + '" class="' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + ' (' + allTags[tag] + ')' + '</a></li>';
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: calculateTagClass(allTags[tag], tagsParams)
+    });
   }
 
   /* [NEW] create variable for all links HTML code */
-  tagList.innerHTML = allTagsHTML;
+  tagList.innerHTML = templates.tagCloudLink(allTagsData);
 };
 
 function tagClickHandler(event) {
@@ -240,23 +264,27 @@ function generateAuthors() {
   for (const article of articles) {
     const authorWrapper = article.querySelector('p.post-author');
     const author = article.getAttribute('data-author');
-    const authorLinkHTML = '<li><a href="#author-' + author + '"><span>' + author + '</span></a></li>';
-    authorWrapper.innerHTML = authorLinkHTML;
-  
-    if(!allAuthors[author]) {
+    const linkHTMLData = { id: author, title: author };
+    const html = templates.articleLink(linkHTMLData);
+    authorWrapper.innerHTML = html;
+
+    if (!allAuthors[author]) {
       allAuthors[author] = 1;
     } else {
       allAuthors[author]++;
     }
-  
 
-  const authorsList = document.querySelector(optAuthorsCloudList);
-  let allAuthorsHTML = '';
-  for(let author in allAuthors){
-    allAuthorsHTML += '<li><a href="#author-' + author + '" class="' + '">' + author + ' (' + allAuthors[author] + ')' + '</a></li>';
-  }
 
-  authorsList.innerHTML = allAuthorsHTML;
+    const authorsList = document.querySelector(optAuthorsCloudList);
+    const allAuthorsData = { authors: [] };
+    for (let author in allAuthors) {
+      allAuthorsData.authors.push({
+        author: author,
+        count: allAuthors[author],
+      });
+    }
+
+    authorsList.innerHTML = templates.authorList(allAuthorsData);
   }
 }
 function authorClickHandler(event) {

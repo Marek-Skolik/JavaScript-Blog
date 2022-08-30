@@ -331,5 +331,4 @@ generateTitleLinks();
 generateTags();
 addClickListenersToTags();
 generateAuthors();
-authorClickHandler();
 addClickListenersToAuthors();

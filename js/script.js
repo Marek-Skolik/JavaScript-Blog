@@ -26,8 +26,7 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optTagsListSelector = '.post-tags .list',
   optTagsCloudList = '.sidebar .tags',
-  optAuthorsListSelector = '.authors .list';
-optAuthorsCloudList = '.sidebar .authors';
+  optAuthorsCloudList = '.sidebar .authors';
 
 const titleClickHandler = function (event) {
   event.preventDefault();
@@ -151,8 +150,8 @@ const generateTags = function () {
     const articleTags = article.getAttribute('data-tags');
     const tags = articleTags.split(' ');
     for (let tag of tags) {
-      const linkHTMLData = { id: tag, title: tag };
-      const linkHTML = templates.articleLink(linkHTMLData);
+      const linkHTMLData = { tag: tag };
+      const linkHTML = templates.tagLink(linkHTMLData);
       html = html + linkHTML;
       /* [NEW] check if this link is NOT already in allTags */
       if (!allTags[tag]) {
@@ -264,8 +263,8 @@ function generateAuthors() {
   for (const article of articles) {
     const authorWrapper = article.querySelector('p.post-author');
     const author = article.getAttribute('data-author');
-    const linkHTMLData = { id: author, title: author };
-    const html = templates.articleLink(linkHTMLData);
+    const linkHTMLData = { author: author };
+    const html = templates.authorLink(linkHTMLData);
     authorWrapper.innerHTML = html;
 
     if (!allAuthors[author]) {
